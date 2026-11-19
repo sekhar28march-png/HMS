@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>AKKMCT - Hospital Management System</title>
+  <link rel="stylesheet" href="style1.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Using Plus Jakarta Sans for a highly legible, premium look -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="portal-active">
+
+  <!-- ==================== ADMIN PORTAL LOGIN GATEWAY ==================== -->
+  <div id="adminPortalScreen" class="admin-portal-wrapper">
+    <div class="portal-container">
+      
+      <div class="portal-brand-block">
+        <div class="portal-trust-badge">TRUST REG. NO: 150600104</div>
+        <div class="portal-logo-circle">
+          <img src="logo.jpg" alt="AKKMCT Official Logo" class="portal-logo-img">
+        </div>
+        <h1 class="portal-trust-title">Anil Kumar Karmakar Memorial Cancer Trust</h1>
+        <p class="portal-trust-subtitle">Hospital Management, Inpatient Billing & Clinical Records Portal</p>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <h3>Admin Portal Login</h3>
+          <span class="portal-badge">🔒 Restricted</span>
+        </div>
+
+        <form id="adminPortalForm" class="portal-card-body" autocomplete="off">
+          <div id="portalErrorAlert" class="portal-error-banner" style="display: none;">
+            <span>⚠️</span>
+            <span id="portalErrorMsg">Invalid User Name or Password. Please try again.</span>
+          </div>
+
+          <div class="portal-input-group">
+            <label for="portalUsername">User Name *</label>
+            <input type="text" id="portalUsername" name="username" class="portal-input" required autocomplete="off" autofocus>
+          </div>
+
+          <div class="portal-input-group">
+            <label for="portalPassword">Password *</label>
+            <div class="portal-pwd-wrapper">
+              <input type="password" id="portalPassword" name="password" class="portal-input" required autocomplete="off" style="padding-right: 42px;">
+              <button type="button" id="btnTogglePortalPassword" class="portal-pwd-toggle" title="Show/Hide Password" aria-label="Toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <div class="portal-options-row">
+            <label class="portal-checkbox-label">
+              <input type="checkbox" id="portalRememberMe"> Keep me logged in this session
+            </label>
+          </div>
+
+          <button type="submit" id="btnPortalSubmit" class="btn-portal-submit">
+            <span>Login to Portal</span>
+            <span>➔</span>
+          </button>
+        </form>
+      </div>
+
+      <div class="portal-footer-notice">
+        <div class="secure-line">
+          <span>🔒</span> 256-bit Encrypted Session | Authorized Staff Only
+        </div>
+        <div>Anath-Priya Bhawan, 60-Shyamnagar Road, Kolkata-700055 | Tel: 8583904303</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MOBILE SIDEBAR BACKDROP OVERLAY -->
+  <div class="sidebar-backdrop no-print" id="sidebarBackdrop"></div>
+
+  <div class="app-layout">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar no-print" id="appSidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <img src="logo.jpg" alt="AKKMCT Logo" class="sidebar-brand-img">
+          <span>AKKMCT</span>
+        </div>
+        <button type="button" class="sidebar-close-btn" id="btnSidebarClose" aria-label="Close navigation">&times;</button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">Main Desk</div>
+        <button class="nav-tab active" data-tab="tab-patients">
+          <span class="icon">👥</span> Patients Register
+        </button>
+        <button class="nav-tab" data-tab="tab-registration-form">
+          <span class="icon">📄</span> Registration (Print)
+        </button>
+        
+        <div class="nav-group-title">Accounts & Billing</div>
+        <button class="nav-tab" data-tab="tab-expenses">
+          <span class="icon">💊</span> Clinical Expenses
+        </button>
+        <button class="nav-tab" data-tab="tab-payments">
+          <span class="icon">💳</span> Payment Receipts
+        </button>
+        <button class="nav-tab" data-tab="tab-bill">
+          <span class="icon">🧾</span> Inpatient Bill (Print)
+        </button>
+        
+        <div class="nav-group-title">Procurement & Finance</div>
+        <button class="nav-tab" data-tab="tab-vendors">
+          <span class="icon">🏢</span> Vendor Master
+        </button>
+        <button class="nav-tab" data-tab="tab-purchases">
+          <span class="icon">📥</span> Purchase Entry (GRN)
+        </button>
+        <button class="nav-tab" data-tab="tab-inventory">
+          <span class="icon">🏬</span> Inventory & Stock
+        </button>
+        <button class="nav-tab" data-tab="tab-vendor-ledger">
+          <span class="icon">📑</span> Vendor Ledger & Payables
+        </button>
+        
+        <div class="nav-group-title">Compliance</div>
+        <button class="nav-tab" data-tab="tab-documents">
+          <span class="icon">📁</span> Documents Checklist
+        </button>
+        <button class="nav-tab" data-tab="tab-settings">
+          <span class="icon">⚙️</span> System Settings <span style="margin-left: auto; font-size: 11px; opacity: 0.6;" title="Administrator Protected">🔒</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="backend-badge" id="backendBadge">
+          <span class="status-dot online"></span>
+          <span id="backendStatusText">Local Mode</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-wrapper">
+      
+      <!-- TOP HEADER -->
+      <header class="app-header no-print">
+        <div class="header-left">
+          <button type="button" class="sidebar-toggle-btn" id="btnSidebarToggle" aria-label="Toggle navigation">
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+          </button>
+          <img src="logo.jpg" alt="AKKMCT Official Logo" class="header-brand-logo">
+          <div class="header-titles">
+            <h1>Anil Kumar Karmakar Memorial Cancer Trust</h1>
+            <p class="motto motto-address">Anath-Priya Bhawan, 60-Shyamnagar Road, Kolkata-700055</p>
+            <p class="motto motto-contact">Reg. No. 150600104 | e-mail: karmakarmct@gmail.com | Contact: 8583904303</p>
+          </div>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 10px;">
+          <div class="clock-display" id="clockDisplay">--:--:--</div>
+          <div class="header-admin-pill" style="display: flex; align-items: center; gap: 8px; background: #f8fafc; border: 1px solid var(--border-light); padding: 5px 12px; border-radius: 20px;">
+            <span style="font-size: 12.5px; font-weight: 700; color: var(--teal-primary); display: flex; align-items: center; gap: 5px;">
+              <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #10b981;"></span>
+              <span id="headerAdminUsernameText">Admin</span>
+            </span>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="logoutAdminPortal()" title="Sign out of software" style="min-height: 24px; padding: 2px 8px; font-size: 11px; border-radius: 12px; cursor: pointer;">Sign Out</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="content-area">
+
+        <!-- TAB 1: PATIENTS REGISTER -->
+        <section id="tab-patients" class="tab-panel active">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Patient Admission Register</h2>
+              <p>Master log of all admitted, discharged, and deceased patients</p>
+            </div>
+            <div class="action-block">
+              <button class="btn btn-primary btn-lg" id="btnOpenNewPatientModal">
+                <span>➕</span> Admit New Patient
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick KPI Cards -->
+          <div class="kpi-grid no-print">
+            <div class="kpi-card blue">
+              <div class="kpi-title">Total Registered</div>
+              <div class="kpi-value" id="kpiTotalPatients">0</div>
+            </div>
+            <div class="kpi-card teal">
+              <div class="kpi-title">Currently Admitted</div>
+              <div class="kpi-value" id="kpiCurrentlyAdmitted">0</div>
+            </div>
+            <div class="kpi-card gray">
+              <div class="kpi-title">Total Billed</div>
+              <div class="kpi-value" id="kpiTotalBilled">₹0.00</div>
+            </div>
+            <div class="kpi-card warning">
+              <div class="kpi-title">Total Outstanding</div>
+              <div class="kpi-value" id="kpiTotalOutstanding">₹0.00</div>
+            </div>
+          </div>
+
+          <!-- Filters & Table -->
+          <div class="content-card no-print">
+            <div class="filter-bar">
+              <input type="text" id="patientSearchInput" placeholder="🔍 Search by Reg No, Name, Category, Phone..." class="form-input search-box">
+              <select id="patientCategoryFilter" class="form-select filter-select">
+                <option value="ALL">All Categories</option>
+                <option value="Cancer">Cancer</option>
+                <option value="Nero">Nero</option>
+                <option value="Dementia">Dementia</option>
+                <option value="Cerebral">Cerebral</option>
+                <option value="Paralysis">Paralysis</option>
+                <option value="Age-related diseases">Age-related diseases</option>
+              </select>
+              <select id="patientStatusFilter" class="form-select filter-select">
+                <option value="ALL">All Statuses</option>
+                <option value="Admitted">Admitted</option>
+                <option value="Discharged">Discharged</option>
+                <option value="Death">Death</option>
+              </select>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="patientsTable">
+                <thead>
+                  <tr>
+                    <th>Reg No</th>
+                    <th>Admission Info</th>
+                    <th>Patient Name</th>
+                    <th>Category</th>
+                    <th>Age</th>
+                    <th>Contact No</th>
+                    <th>Status</th>
+                    <th>Total Bill</th>
+                    <th>Received</th>
+                    <th>Outstanding</th>
+                    <th class="no-print" style="white-space: nowrap; min-width: 200px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="patientsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: REGISTRATION FORM (PRINTABLE) -->
+        <section id="tab-registration-form" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Patient Registration Form</h2>
+              <p>A4 print-ready admission declaration and record</p>
+            </div>
+            <div class="action-block filter-group">
+              <select id="regFormPatientSelect" class="form-select">
+                <option value="">-- Choose Patient --</option>
+              </select>
+              <button type="button" class="btn btn-secondary" onclick="openEditPatientModal(state.selectedRegNo)">✏️ Edit Record</button>
+              <button class="btn btn-primary" onclick="window.print()">🖨️ Print Form</button>
+            </div>
+          </div>
+
+          <!-- Printable A4 Layout -->
+          <div class="paper-backdrop">
+            <div class="paper-page a4-portrait" id="printableRegForm">
+              <div class="paper-header">
+                <div class="trust-badge">TRUST REG. NO: 150600104</div>
+                <h1 class="trust-title">Anil Kumar Karmakar Memorial Cancer Trust</h1>
+                <p class="trust-subtitle">A Palliative & Cancer Care Hospital Service</p>
+                <p class="trust-contact">Anath-Priya Bhawan, 60, Shyamnagar Road, Kolkata-700055 | e-mail: karmakarmct@gmail.com, Contact: 8583904303</p>
+                <div class="form-document-title">PATIENT ADMISSION & REGISTRATION RECORD</div>
+              </div>
+
+              <div class="form-grid">
+                <div class="grid-row header-row">
+                  <div class="col-6"><strong>Reg. No:</strong> <span id="rfRegNo" class="field-val">--</span></div>
+                  <div class="col-6 text-right"><strong>Print Date:</strong> <span id="rfPrintDate" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-6"><strong>Patient Full Name:</strong> <span id="rfFullName" class="field-val">--</span></div>
+                  <div class="col-6"><strong>Father/Husband:</strong> <span id="rfGuardian" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-4"><strong>Date:</strong> <span id="rfAdmDate" class="field-val">--</span></div>
+                  <div class="col-4"><strong>Time:</strong> <span id="rfAdmTime" class="field-val">--</span></div>
+                  <div class="col-4"><strong>Day:</strong> <span id="rfAdmDay" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-4"><strong>Age:</strong> <span id="rfAge" class="field-val">--</span><span id="rfAgeSex" style="display:none;"></span></div>
+                  <div class="col-4"><strong>Disease Category:</strong> <span id="rfDiseaseCategory" class="field-val" style="font-weight: 700; color: #9a3412;">--</span></div>
+                  <div class="col-4"><strong>Marital Status:</strong> <span id="rfMarital" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-4"><strong>Religion / Nationality:</strong> <span id="rfReligion" class="field-val">--</span></div>
+                  <div class="col-4"><strong>Occupation:</strong> <span id="rfOccupation" class="field-val">--</span></div>
+                  <div class="col-4"><strong>Referring Doctor:</strong> <span id="rfRefDoctor" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row"><div class="col-12"><strong>Permanent Address:</strong> <span id="rfPermAddress" class="field-val">--</span></div></div>
+                <div class="grid-row"><div class="col-12"><strong>Present Address:</strong> <span id="rfPresAddress" class="field-val">--</span></div></div>
+                <div class="grid-row">
+                  <div class="col-3"><strong>City:</strong> <span id="rfCity" class="field-val">--</span></div>
+                  <div class="col-3"><strong>District:</strong> <span id="rfDistrict" class="field-val">--</span></div>
+                  <div class="col-3"><strong>State:</strong> <span id="rfState" class="field-val">--</span></div>
+                  <div class="col-3"><strong>PIN:</strong> <span id="rfPin" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-6"><strong>Contact Person:</strong> <span id="rfContactPerson" class="field-val">--</span></div>
+                  <div class="col-6"><strong>Mobile/WhatsApp:</strong> <span id="rfPhones" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-6"><strong>Patient Aadhaar No:</strong> <span id="rfAadhaarNo" class="field-val">--</span></div>
+                  <div class="col-6"><strong>Aadhaar Document:</strong> <span id="rfAadhaarStatus" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-6"><strong>Current Status:</strong> <span id="rfStatus" class="field-val badge-field">--</span></div>
+                  <div class="col-6"><strong>Discharge/Death Info:</strong> <span id="rfDischargeInfo" class="field-val">--</span></div>
+                </div>
+                <div class="grid-row">
+                  <div class="col-12"><strong>Doctor's Advice:</strong> <span id="rfDoctorAdvice" class="field-val">--</span></div>
+                </div>
+              </div>
+
+              <div class="declaration-box">
+                <div class="declaration-title">PATIENT GUARDIAN / RELATIVE DECLARATION</div>
+                <p class="declaration-body">
+                  "I <span class="fill-line">________________________________________________</span> (relative/guardian of patient) being the <span class="fill-line">________________________</span> (relationship with patient) declare that knowing his/her general condition is very poor. If any occurrence (death, etc) occurs, the <strong>Anil Kumar Karmakar Memorial Cancer Trust</strong> will not be responsible."
+                </p>
+              </div>
+
+              <div class="signatures-block">
+                <div class="sig-column">
+                  <div class="sig-space"></div>
+                  <div class="sig-line"></div>
+                  <div class="sig-label">Signature of Patient / Relatives</div>
+                </div>
+                <div class="sig-column text-right">
+                  <div class="sig-space"></div>
+                  <div class="sig-line"></div>
+                  <div class="sig-label">Signature of Authority</div>
+                  <div class="sig-sublabel">Anil Kumar Karmakar Memorial Cancer Trust</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: EXPENSES LEDGER -->
+        <section id="tab-expenses" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Clinical Expenses Ledger</h2>
+              <p>Itemized ledger for pathology, pharmacy, oxygen, etc.</p>
+            </div>
+            <div class="action-block filter-group">
+              <select id="expensePatientFilter" class="form-select"><option value="ALL">All Patients</option></select>
+              <select id="expenseCategoryFilter" class="form-select">
+                <option value="ALL">All Categories</option>
+                <option value="Doctor Fees">Doctor Fees</option>
+                <option value="Pathology">Pathology</option>
+                <option value="Medicine">Medicine</option>
+                <option value="Oxygen">Oxygen</option>
+                <option value="Non-Surgical Item">Non-Surgical Item</option>
+                <option value="Others">Others</option>
+              </select>
+              <button class="btn btn-primary" id="btnOpenNewExpenseModal">➕ Add Expense</button>
+            </div>
+          </div>
+          <div class="content-card table-responsive">
+            <table class="data-table" id="expensesTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Reg No</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th style="text-align: center;">Qty</th>
+                  <th style="text-align: right;">Rate</th>
+                  <th style="text-align: right;">Amount</th>
+                  <th style="text-align: right;">Discount</th>
+                  <th style="text-align: right;">Net Amount</th>
+                  <th class="no-print">Action</th>
+                </tr>
+              </thead>
+              <tbody id="expensesTableBody"></tbody>
+              <tfoot>
+                <tr class="table-total-row" style="background: #fff8f3; font-weight: 800; border-top: 2px solid #ffaa66;">
+                  <td colspan="4" class="text-right" style="color: #c2410c;">TOTAL (FILTERED):</td>
+                  <td id="expTotalQty" style="text-align: center; color: #c2410c;">0</td>
+                  <td id="expAvgRate" style="text-align: right; color: #64748b;">-</td>
+                  <td id="expTotalAmount" style="text-align: right; color: #1e293b;">₹0.00</td>
+                  <td id="expTotalDiscount" style="text-align: right; color: #c026d3;">₹0.00</td>
+                  <td id="expTotalNet" style="text-align: right; font-weight: 900; color: #ff5500; font-size: 14.5px;">₹0.00</td>
+                  <td class="no-print"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- All Categories Summary (Qnty, Rate & Amount) on bottom of Ledger -->
+          <div class="content-card no-print" id="expenseCategoriesSummaryCard" style="margin-top: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #fed7aa; padding-bottom: 8px;">
+              <h3 style="font-size: 15px; font-weight: 800; color: #9a3412; margin: 0; display: flex; align-items: center; gap: 8px;">
+                📊 All Categories Summary (Qnty, Rate & Amount)
+              </h3>
+              <span id="expSummarySubtitle" style="font-size: 12.5px; color: #ea580c; font-weight: 700; background: #fff7ed; padding: 3px 10px; border-radius: 4px; border: 1px solid #ffedd5;">For Selected Filter</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="expCategorySummaryTable" style="margin: 0;">
+                <thead>
+                  <tr style="background: #fce4d6;">
+                    <th style="width: 25%;">Category Head</th>
+                    <th style="width: 15%; text-align: center;">Total Qnty</th>
+                    <th style="width: 15%; text-align: right;">Avg Rate (₹)</th>
+                    <th style="width: 15%; text-align: right;">Gross Amount (₹)</th>
+                    <th style="width: 15%; text-align: right;">Discount (₹)</th>
+                    <th style="width: 15%; text-align: right;">Net Amount (₹)</th>
+                  </tr>
+                </thead>
+                <tbody id="expCategorySummaryBody">
+                  <!-- Dynamically populated by renderExpensesTable() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: PAYMENTS & RECEIPTS -->
+        <section id="tab-payments" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Payments & Receipts</h2>
+              <p>Advance deposits and final settlements</p>
+            </div>
+            <div class="action-block filter-group">
+              <select id="paymentPatientFilter" class="form-select"><option value="ALL">All Patients</option></select>
+              <button class="btn btn-primary" id="btnOpenNewPaymentModal">➕ Record Payment</button>
+            </div>
+          </div>
+          <div class="content-card table-responsive">
+            <table class="data-table" id="paymentsTable">
+              <thead>
+                <tr>
+                  <th>Receipt Date</th>
+                  <th>Reg No</th>
+                  <th>Amount (₹)</th>
+                  <th>Mode</th>
+                  <th>Remarks / Ref No</th>
+                  <th class="no-print">Action</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB 5: INPATIENT BILL (PRINTABLE) -->
+        <section id="tab-bill" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Inpatient Billing Statement</h2>
+              <p>Consolidated bill with daily charges and ledger</p>
+            </div>
+            <div class="action-block filter-group">
+              <select id="billPatientSelect" class="form-select"><option value="">-- Choose Patient --</option></select>
+              <button type="button" class="btn btn-secondary" onclick="openEditPatientModal(state.selectedRegNo)">✏️ Edit Record</button>
+              <button class="btn btn-primary" onclick="window.print()">🖨️ Print Bill</button>
+            </div>
+          </div>
+
+          <div class="paper-backdrop">
+            <div class="paper-page a4-portrait" id="printableBill">
+              <div class="paper-header">
+                <div class="trust-badge">TRUST REG. NO: 150600104</div>
+                <h1 class="trust-title">Anil Kumar Karmakar Memorial Cancer Trust</h1>
+                <p class="trust-subtitle">Hospital & Palliative Care Unit</p>
+                <div class="form-document-title bill-title">INPATIENT FINAL / RUNNING BILL</div>
+              </div>
+              <div class="bill-meta-grid">
+                <div class="meta-item"><strong>Reg. No:</strong> <span id="billRegNo">--</span></div>
+                <div class="meta-item text-right"><strong>Bill Date:</strong> <span id="billDate">--</span></div>
+                <div class="meta-item"><strong>Patient Name:</strong> <span id="billPatientName">--</span></div>
+                <div class="meta-item text-right"><strong>Category:</strong> <span id="billDiseaseCategory" style="font-weight: 700; color: #9a3412;">--</span> <span id="billAgeSex" style="display:none;"></span></div>
+                <div class="meta-item"><strong>Admission:</strong> <span id="billAdmissionInfo">--</span></div>
+                <div class="meta-item text-right"><strong>Discharge:</strong> <span id="billDischargeInfo">--</span></div>
+                <div class="meta-item"><strong>Status:</strong> <span id="billStatus">--</span></div>
+                <div class="meta-item text-right"><strong>Billed Stay:</strong> <span id="billStayDays" class="highlight-text">0 Days</span></div>
+              </div>
+              <table class="bill-charges-table">
+                <thead>
+                  <tr>
+                    <th style="width: 8%;">Sl.</th>
+                    <th style="width: 52%;">Description of Charges</th>
+                    <th style="width: 15%; text-align: center;">Qty/Days</th>
+                    <th style="width: 10%; text-align: right;">Rate</th>
+                    <th style="width: 15%; text-align: right;">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center">1</td>
+                    <td><strong>Bed Charges per day</strong></td>
+                    <td class="text-center" id="billBedDays">0</td>
+                    <td class="text-right" id="billBedRate">0.00</td>
+                    <td class="text-right bold" id="billBedAmount">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">2</td>
+                    <td><strong>Inpatient Stay Charges</strong></td>
+                    <td class="text-center" id="billStayDaysQty">0</td>
+                    <td class="text-right" id="billStayRate">0.00</td>
+                    <td class="text-right bold" id="billStayAmount">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">3</td>
+                    <td><strong>Daily Palliative Care Charges</strong></td>
+                    <td class="text-center" id="billPalliativeDays">0</td>
+                    <td class="text-right" id="billPalliativeRate">0.00</td>
+                    <td class="text-right bold" id="billPalliativeAmount">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">4</td>
+                    <td><strong>Nursing & Ward Charges</strong></td>
+                    <td class="text-center" id="billNursingDays">0</td>
+                    <td class="text-right" id="billNursingRate">0.00</td>
+                    <td class="text-right bold" id="billNursingAmount">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">5</td>
+                    <td><strong>Doctor Fees</strong></td>
+                    <td class="text-center" id="billDoctorQty">-</td>
+                    <td class="text-right" id="billDoctorRate">-</td>
+                    <td class="text-right bold" id="billDoctorFees">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">6</td>
+                    <td><strong>Pathology</strong><br><small class="text-muted">Gross: <span id="billPathologyGross">₹0.00</span> | Disc: <span id="billPathologyDiscount">₹0.00</span></small></td>
+                    <td class="text-center" id="billPathologyQty">-</td>
+                    <td class="text-right" id="billPathologyRate">-</td>
+                    <td class="text-right bold" id="billPathologyNet">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">7</td>
+                    <td><strong>Medicines</strong></td>
+                    <td class="text-center" id="billMedicineQty">-</td>
+                    <td class="text-right" id="billMedicineRate">-</td>
+                    <td class="text-right bold" id="billMedicine">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">8</td>
+                    <td><strong>Oxygen Support</strong></td>
+                    <td class="text-center" id="billOxygenQty">-</td>
+                    <td class="text-right" id="billOxygenRate">-</td>
+                    <td class="text-right bold" id="billOxygen">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">9</td>
+                    <td><strong>Non-Surgical Items</strong></td>
+                    <td class="text-center" id="billNonSurgicalQty">-</td>
+                    <td class="text-right" id="billNonSurgicalRate">-</td>
+                    <td class="text-right bold" id="billNonSurgical">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">10</td>
+                    <td><strong>Others</strong></td>
+                    <td class="text-center" id="billOthersQty">-</td>
+                    <td class="text-right" id="billOthersRate">-</td>
+                    <td class="text-right bold" id="billOthers">₹0.00</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="bill-total-row">
+                    <td colspan="4" class="text-right"><strong>TOTAL BILL AMOUNT:</strong></td>
+                    <td class="text-right bold" id="billGrandTotal">₹0.00</td>
+                  </tr>
+                  <tr class="bill-paid-row">
+                    <td colspan="4" class="text-right"><strong>TOTAL PAYMENT RECEIVED:</strong></td>
+                    <td class="text-right bold" id="billTotalPaid">₹0.00</td>
+                  </tr>
+                  <tr class="bill-outstanding-row">
+                    <td colspan="4" class="text-right"><span class="outstanding-label">OUTSTANDING TILL DATE:</span></td>
+                    <td class="text-right outstanding-value" id="billOutstanding">₹0.00</td>
+                  </tr>
+                </tfoot>
+              </table>
+              <div class="bill-payments-section">
+                <div class="payments-title">Recent Payment Receipts:</div>
+                <table class="receipts-mini-table">
+                  <thead><tr><th>Date</th><th>Mode</th><th>Remarks</th><th class="text-right">Amount</th></tr></thead>
+                  <tbody id="billReceiptsBody"></tbody>
+                </table>
+              </div>
+              <div class="signatures-block bill-signatures">
+                <div class="sig-column"><div class="sig-line"></div><div class="sig-label">Prepared By</div></div>
+                <div class="sig-column text-center"><div class="sig-line"></div><div class="sig-label">Checked By</div></div>
+                <div class="sig-column text-right"><div class="sig-line"></div><div class="sig-label">Authorized Signatory</div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 6: DOCUMENTS -->
+        <section id="tab-documents" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Documents Compliance</h2>
+              <p>Track Aadhaar and medical advice records</p>
+            </div>
+          </div>
+          <div class="content-card table-responsive">
+            <table class="data-table" id="documentsTable">
+              <thead>
+                <tr>
+                  <th>Reg No</th>
+                  <th>Patient Name</th>
+                  <th>Patient Aadhaar</th>
+                  <th>Link</th>
+                  <th>Relative Aadhaar</th>
+                  <th>Link</th>
+                  <th>Verified</th>
+                  <th>Discharge Cert</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody id="documentsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB 7: SETTINGS -->
+        <section id="tab-settings" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>System Settings</h2>
+              <p>Configure billing rules and storage</p>
+            </div>
+            <div class="action-block">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="lockAdminSettings()" title="Lock settings and exit administrative mode">🔒 Lock Settings</button>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <div class="content-card">
+              <h3>Billing Rules</h3>
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Configure daily inpatient care rates (default: ₹0.00 / day).</p>
+              
+              <div class="form-row-2">
+                <div class="form-group-stacked">
+                  <label for="settingBedCharges">Bed Charges per day (₹)</label>
+                  <input type="number" id="settingBedCharges" class="form-input" value="0" min="0" step="0.01">
+                </div>
+                <div class="form-group-stacked">
+                  <label for="settingStayCharges">Inpatient Stay Charges (₹)</label>
+                  <input type="number" id="settingStayCharges" class="form-input" value="0" min="0" step="0.01">
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group-stacked">
+                  <label for="settingPalliativeCareCharges">Daily Palliative Care Charges (₹)</label>
+                  <input type="number" id="settingPalliativeCareCharges" class="form-input" value="0" min="0" step="0.01">
+                </div>
+                <div class="form-group-stacked">
+                  <label for="settingNursingWardCharges">Nursing & Ward Charges (₹)</label>
+                  <input type="number" id="settingNursingWardCharges" class="form-input" value="0" min="0" step="0.01">
+                </div>
+              </div>
+
+              <div class="form-group-stacked">
+                <label for="settingCountAdmissionDay">Count Admission Day as Billed Day</label>
+                <select id="settingCountAdmissionDay" class="form-select">
+                  <option value="Yes" selected>Yes (Standard inclusive count)</option>
+                  <option value="No">No (Strict 24-hr cycle)</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" id="btnSaveSettings">Save Settings</button>
+            </div>
+            <div class="content-card">
+              <h3>Backend Setup</h3>
+              <div class="form-group-stacked">
+                <label for="settingBackendType">Active Storage</label>
+                <select id="settingBackendType" class="form-select">
+                  <option value="local">Local Browser Storage</option>
+                  <option value="sheets">Google Sheets</option>
+                  <option value="mongodb">MongoDB Atlas</option>
+                </select>
+              </div>
+              <div class="form-group-stacked">
+                <label for="settingWebAppUrl">Apps Script Web App URL</label>
+                <input type="text" id="settingWebAppUrl" class="form-input" placeholder="https://script.google.com/...">
+              </div>
+              <button class="btn btn-secondary" id="btnTestBackendConnection">Test Connection</button>
+            </div>
+
+            <!-- Card 3: Admin Credentials & Security -->
+            <div class="content-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="margin: 0;">Admin Portal Credentials</h3>
+                <span class="portal-badge" style="background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; font-size: 11px; padding: 2px 8px; border-radius: 9999px; font-weight: 700;">🔒 Security</span>
+              </div>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px;">
+                Configure custom Username & Password for the Admin Portal login.
+              </p>
+
+              <form id="adminCredentialsForm" autocomplete="off">
+                <div id="cfgSecurityAlert" class="portal-error-banner" style="display: none; margin-bottom: 12px;">
+                  <span>⚠️</span>
+                  <span id="cfgSecurityAlertText"></span>
+                </div>
+                <div id="cfgSecuritySuccess" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 10px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; margin-bottom: 12px; align-items: center; gap: 8px;">
+                  <span>✅</span>
+                  <span id="cfgSecuritySuccessText">Admin credentials updated successfully!</span>
+                </div>
+
+                <div class="form-group-stacked">
+                  <label for="cfgCurrentPassword">Current Password *</label>
+                  <div class="portal-pwd-wrapper">
+                    <input type="password" id="cfgCurrentPassword" class="form-input" required autocomplete="current-password">
+                    <button type="button" class="portal-pwd-toggle" onclick="togglePasswordVisibility('cfgCurrentPassword', this)" title="Show/Hide Password">👁️</button>
+                  </div>
+                </div>
+
+                <div class="form-group-stacked">
+                  <label for="cfgNewUsername">New Username *</label>
+                  <input type="text" id="cfgNewUsername" class="form-input" required autocomplete="username">
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group-stacked">
+                    <label for="cfgNewPassword">New Password *</label>
+                    <div class="portal-pwd-wrapper">
+                      <input type="password" id="cfgNewPassword" class="form-input" required autocomplete="new-password">
+                      <button type="button" class="portal-pwd-toggle" onclick="togglePasswordVisibility('cfgNewPassword', this)" title="Show/Hide Password">👁️</button>
+                    </div>
+                  </div>
+                  <div class="form-group-stacked">
+                    <label for="cfgConfirmPassword">Confirm New Password *</label>
+                    <div class="portal-pwd-wrapper">
+                      <input type="password" id="cfgConfirmPassword" class="form-input" required autocomplete="new-password">
+                      <button type="button" class="portal-pwd-toggle" onclick="togglePasswordVisibility('cfgConfirmPassword', this)" title="Show/Hide Password">👁️</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                  <button type="submit" class="btn btn-primary" id="btnUpdateAdminCredentials">Update Credentials</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 7: VENDOR MASTER -->
+        <section id="tab-vendors" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Vendor Master</h2>
+              <p>Supplier profiles, GSTIN, drug licenses, banking details & credit terms</p>
+            </div>
+            <div class="action-block filter-group">
+              <input type="text" id="vendorSearchInput" class="form-input" placeholder="Search vendor name, GSTIN..." style="min-width: 200px;">
+              <select id="vendorCategoryFilter" class="form-select">
+                <option value="ALL">All Supplier Types</option>
+                <option value="Medicine / Pharmacy">Medicine / Pharmacy</option>
+                <option value="Surgical & Disposables">Surgical & Disposables</option>
+                <option value="Medical Oxygen">Medical Oxygen</option>
+                <option value="Pathology & Lab">Pathology & Lab</option>
+                <option value="General & Sundry">General & Sundry</option>
+              </select>
+              <button class="btn btn-primary" id="btnOpenNewVendorModal">➕ Add Vendor</button>
+            </div>
+          </div>
+          <div class="content-card table-responsive">
+            <table class="data-table table-compact" id="vendorsTable">
+              <thead>
+                <tr>
+                  <th>Vendor ID</th>
+                  <th>Vendor / Company Name</th>
+                  <th>Category</th>
+                  <th>Contact Person & Phone</th>
+                  <th>GSTIN / Reg</th>
+                  <th>Credit Days</th>
+                  <th style="text-align: right;">Total Purchases</th>
+                  <th style="text-align: right;">Total Paid</th>
+                  <th style="text-align: right;">Outstanding (₹)</th>
+                  <th class="no-print" style="text-align: center;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="vendorsTableBody"></tbody>
+              <tfoot>
+                <tr class="table-total-row" style="background: #fff8f3; font-weight: 800; border-top: 2px solid #ffaa66;">
+                  <td colspan="6" class="text-right" style="color: #c2410c;">TOTAL (ALL VENDORS):</td>
+                  <td id="vendorTotalPurchasesSum" style="text-align: right; color: #1e293b;">₹0.00</td>
+                  <td id="vendorTotalPaidSum" style="text-align: right; color: #047857;">₹0.00</td>
+                  <td id="vendorTotalOutstandingSum" style="text-align: right; font-weight: 900; color: #dc2626; font-size: 14px;">₹0.00</td>
+                  <td class="no-print"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB 8: PURCHASE ENTRY (GRN) -->
+        <section id="tab-purchases" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Purchase Entry (GRN)</h2>
+              <p>Inward supplier invoices, batch creation & stock intake</p>
+            </div>
+            <div class="action-block filter-group">
+              <select id="purchaseVendorFilter" class="form-select"><option value="ALL">All Vendors</option></select>
+              <button class="btn btn-primary" id="btnOpenNewPurchaseModal">➕ New Purchase Bill (GRN)</button>
+            </div>
+          </div>
+          <div class="content-card table-responsive">
+            <table class="data-table" id="purchasesTable">
+              <thead>
+                <tr>
+                  <th>GRN No</th>
+                  <th>Date</th>
+                  <th>Supplier Invoice No</th>
+                  <th>Vendor Name</th>
+                  <th style="text-align: center;">Items / Batches</th>
+                  <th style="text-align: right;">Gross Amount</th>
+                  <th style="text-align: right;">GST (₹)</th>
+                  <th style="text-align: right;">Net Bill (₹)</th>
+                  <th style="text-align: center;">Payment Status</th>
+                  <th class="no-print" style="text-align: center;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="purchasesTableBody"></tbody>
+              <tfoot>
+                <tr class="table-total-row" style="background: #fff8f3; font-weight: 800; border-top: 2px solid #ffaa66;">
+                  <td colspan="5" class="text-right" style="color: #c2410c;">TOTAL PURCHASES:</td>
+                  <td id="purchasesTotalGrossSum" style="text-align: right; color: #1e293b;">₹0.00</td>
+                  <td id="purchasesTotalGstSum" style="text-align: right; color: #64748b;">₹0.00</td>
+                  <td id="purchasesTotalNetSum" style="text-align: right; font-weight: 900; color: #ff5500; font-size: 14px;">₹0.00</td>
+                  <td colspan="2" class="no-print"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB 9: INVENTORY & STOCK MANAGEMENT -->
+        <section id="tab-inventory" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Inventory & Stock Management</h2>
+              <p>Batch tracking, FEFO expiry management & departmental/patient issue</p>
+            </div>
+            <div class="action-block filter-group">
+              <input type="text" id="inventorySearchInput" class="form-input" placeholder="Search item, batch..." style="min-width: 180px;">
+              <select id="inventoryCategoryFilter" class="form-select">
+                <option value="ALL">All Categories</option>
+                <option value="Medicine">Medicine</option>
+                <option value="Non-Surgical Item">Non-Surgical Item</option>
+                <option value="Oxygen">Oxygen</option>
+                <option value="Pathology">Pathology</option>
+                <option value="Others">Others</option>
+              </select>
+              <button class="btn btn-primary" id="btnOpenIssueStockModal" style="background: #0284c7; border-color: #0369a1;">📤 Issue Stock / Dispense</button>
+            </div>
+          </div>
+
+          <!-- Inventory KPI Cards -->
+          <div class="kpi-grid no-print" style="margin-bottom: 16px;">
+            <div class="kpi-card">
+              <div class="kpi-title">Total Stock Valuation</div>
+              <div class="kpi-value text-primary" id="kpiStockValuation">₹0.00</div>
+              <div class="kpi-sub">Total active inventory asset</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Active Batches</div>
+              <div class="kpi-value" id="kpiActiveBatchesCount">0</div>
+              <div class="kpi-sub">Tracked drug & consumable lines</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Low Stock Alert (≤10 units)</div>
+              <div class="kpi-value text-red" id="kpiLowStockCount">0</div>
+              <div class="kpi-sub">Re-order required</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Expiring Soon (≤60 days)</div>
+              <div class="kpi-value" style="color: #ea580c;" id="kpiExpiringSoonCount">0</div>
+              <div class="kpi-sub">Priority dispensation (FEFO)</div>
+            </div>
+          </div>
+
+          <div class="content-card table-responsive">
+            <table class="data-table" id="inventoryTable">
+              <thead>
+                <tr>
+                  <th>Item Code / Name</th>
+                  <th>Category</th>
+                  <th>Batch No</th>
+                  <th>Expiry Date</th>
+                  <th style="text-align: center;">Stock Qty</th>
+                  <th style="text-align: right;">Unit Rate (₹)</th>
+                  <th style="text-align: right;">Valuation (₹)</th>
+                  <th style="text-align: center;">Status</th>
+                  <th class="no-print" style="text-align: center;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB 10: VENDOR LEDGER & PAYABLES -->
+        <section id="tab-vendor-ledger" class="tab-panel">
+          <div class="page-header no-print">
+            <div class="title-block">
+              <h2>Vendor Ledger & Accounts Payable</h2>
+              <p>Statement of accounts, payment vouchers & vendor outstanding aging</p>
+            </div>
+            <div class="action-block filter-group">
+              <select id="ledgerVendorSelect" class="form-select"><option value="">-- Choose Vendor --</option></select>
+              <button class="btn btn-primary" id="btnOpenVendorPaymentModal" style="background: #16a34a; border-color: #15803d;">💵 Record Payment Voucher</button>
+            </div>
+          </div>
+
+          <!-- Vendor Summary Box -->
+          <div class="kpi-grid no-print" style="margin-bottom: 16px;">
+            <div class="kpi-card">
+              <div class="kpi-title">Total Invoiced (Billed)</div>
+              <div class="kpi-value" id="vlTotalBilled">₹0.00</div>
+              <div class="kpi-sub" id="vlVendorNameSub">Selected Supplier</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Total Payments Settled</div>
+              <div class="kpi-value" style="color: #16a34a;" id="vlTotalPaid">₹0.00</div>
+              <div class="kpi-sub">Via Cheque / NEFT / UPI</div>
+            </div>
+            <div class="kpi-card" style="background: #FFFF00; border: 2px solid #CC0000;">
+              <div class="kpi-title" style="color: #CC0000; font-weight: 800;">OUTSTANDING TILL DATE</div>
+              <div class="kpi-value" style="color: #CC0000; font-weight: 900; font-size: 26px;" id="vlOutstandingBalance">₹0.00</div>
+              <div class="kpi-sub" style="color: #990000; font-weight: 700;">Net Payable to Vendor</div>
+            </div>
+          </div>
+
+          <!-- Statement of Account Ledger Table -->
+          <div class="content-card table-responsive">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <h3 style="font-size: 15px; font-weight: 800; color: #9a3412; margin: 0;">📑 Transaction Statement of Account</h3>
+              <span id="vlStatementContextBadge" class="badge" style="background: #fff7ed; color: #c2410c; border: 1px solid #fdba74;">Select a vendor</span>
+            </div>
+            <table class="data-table" id="vendorLedgerTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Transaction Type</th>
+                  <th>Document / Reference No</th>
+                  <th>Details / Narration</th>
+                  <th style="text-align: right;">Debit / Paid (₹)</th>
+                  <th style="text-align: right;">Credit / Billed (₹)</th>
+                  <th style="text-align: right;">Balance (₹)</th>
+                </tr>
+              </thead>
+              <tbody id="vendorLedgerTableBody"></tbody>
+            </table>
+          </div>
+
+          <!-- All Vendors Aging Analysis on Bottom -->
+          <div class="content-card no-print" style="margin-top: 18px;">
+            <div style="border-bottom: 2px solid #fed7aa; padding-bottom: 8px; margin-bottom: 12px;">
+              <h3 style="font-size: 15px; font-weight: 800; color: #9a3412; margin: 0;">📊 All Vendors Outstanding Aging Summary</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="vendorAgingTable">
+                <thead>
+                  <tr style="background: #fce4d6;">
+                    <th>Vendor Name</th>
+                    <th>Category</th>
+                    <th style="text-align: right;">Current (0-15 Days)</th>
+                    <th style="text-align: right;">16-30 Days</th>
+                    <th style="text-align: right;">31-60 Days</th>
+                    <th style="text-align: right;">60+ Days Overdue</th>
+                    <th style="text-align: right; font-weight: 900;">Total Outstanding (₹)</th>
+                    <th class="no-print" style="text-align: center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="vendorAgingTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS (Spacious & Stacked Layout) ==================== -->
+
+  <!-- Modal 1: New Patient -->
+  <div class="modal-backdrop no-print" id="newPatientModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3>Admit New Patient</h3>
+        <button class="modal-close" onclick="closeModal('newPatientModal')">×</button>
+      </div>
+      <form id="newPatientForm">
+        <div class="modal-body form-spacious-stacked">
+          
+          <div class="form-section">
+            <h4 class="form-section-title">Personal Details</h4>
+            <div class="form-row-3">
+              <div class="form-group-stacked">
+                <label>Title *</label>
+                <select name="mrMrs" class="form-select" required><option>Mr</option><option>Mrs</option><option>Ms</option></select>
+              </div>
+              <div class="form-group-stacked"><label>First Name *</label><input type="text" name="name" class="form-input" required></div>
+              <div class="form-group-stacked"><label>Surname *</label><input type="text" name="surname" class="form-input" required></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group-stacked"><label>Guardian (Father/Husband)</label><input type="text" name="guardian" class="form-input"></div>
+              <div class="form-group-stacked"><label>Age *</label><input type="number" name="age" class="form-input" required min="0" max="150"></div>
+              <div class="form-group-stacked">
+                <label for="inpDiseaseCategory">Disease Category *</label>
+                <select name="diseaseCategory" id="inpDiseaseCategory" class="form-select" required>
+                  <option value="">-- Choose Category --</option>
+                  <option value="Cancer">Cancer</option>
+                  <option value="Nero">Nero</option>
+                  <option value="Dementia">Dementia</option>
+                  <option value="Cerebral">Cerebral</option>
+                  <option value="Paralysis">Paralysis</option>
+                  <option value="Age-related diseases">Age-related diseases</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Marital Status</label><select name="maritalStatus" class="form-select"><option>Married</option><option>Single</option><option>Widowed</option><option>Divorced</option></select></div>
+              <div class="form-group-stacked"><label>Occupation</label><input type="text" name="occupation" class="form-input"></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Religion</label><input type="text" name="religion" class="form-input"></div>
+              <div class="form-group-stacked"><label>Nationality</label><input type="text" name="nationality" class="form-input" value="Indian"></div>
+            </div>
+
+            <!-- Patient Aadhaar Number Entry & File Upload (Drag & Drop + View Option) -->
+            <div class="form-group-stacked" style="margin-top: 14px;">
+              <label for="inpPatientAadhaarNo">Patient Aadhaar Number</label>
+              <input type="text" id="inpPatientAadhaarNo" name="aadhaarNo" class="form-input" placeholder="XXXX XXXX XXXX (12-digit UIDAI Number)" maxlength="14" inputmode="numeric" autocomplete="off">
+            </div>
+
+            <div class="form-group-stacked">
+              <label>Upload Patient Aadhaar Card Copy</label>
+              <div class="file-dropzone" id="aadhaarDropzone">
+                <input type="file" id="inpPatientAadhaarFile" class="file-input-hidden" accept="image/*,application/pdf">
+                <input type="hidden" id="inpPatientAadhaarDoc" name="patientAadhaarDoc">
+                <div class="dropzone-content" id="aadhaarDropzoneContent">
+                  <div class="dropzone-icon">🪪</div>
+                  <div class="dropzone-text">
+                    <strong>Click to choose file</strong> or drag & drop Aadhaar Card here
+                  </div>
+                  <div class="dropzone-hint">Supports PDF, PNG, JPG, JPEG (Max 8MB)</div>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnBrowseAadhaar" style="margin-top: 8px;">
+                    📂 Choose File
+                  </button>
+                </div>
+              </div>
+
+              <!-- Uploaded Document Status & Action Bar with View Button -->
+              <div id="aadhaarPreviewContainer" class="uploaded-doc-bar" style="display: none;">
+                <div class="uploaded-doc-info">
+                  <span class="uploaded-doc-badge">✓ Attached</span>
+                  <span id="aadhaarFileName" class="uploaded-doc-name">📄 aadhaar_card.pdf</span>
+                </div>
+                <div class="uploaded-doc-actions">
+                  <button type="button" class="btn btn-primary btn-sm" id="btnViewUploadedAadhaar">
+                    👁️ View Uploaded File
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm text-red" id="btnRemoveAadhaar" title="Remove attached file">
+                    🗑️ Remove
+                  </button>
+                </div>
+              </div>
+
+              <!-- Image Thumbnail Preview (Optional) -->
+              <div id="aadhaarImgPreviewWrapper" class="uploaded-thumbnail-wrapper" style="display: none;">
+                <img id="aadhaarImgPreview" src="" alt="Aadhaar Card Preview" class="uploaded-thumbnail-img">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h4 class="form-section-title">Address Details</h4>
+            <div class="form-group-stacked"><label>Permanent Address *</label><textarea name="permanentAddress" id="inpPermanentAddress" class="form-input" rows="2" required></textarea></div>
+            <div class="form-group-stacked"><label>Present Address * <small>(Type "same" to copy)</small></label><textarea name="presentAddress" id="inpPresentAddress" class="form-input" rows="2" required></textarea></div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>City *</label><input type="text" name="city" class="form-input" required></div>
+              <div class="form-group-stacked"><label>District *</label><input type="text" name="district" class="form-input" required></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>State *</label><input type="text" name="state" class="form-input" value="West Bengal" required></div>
+              <div class="form-group-stacked"><label>PIN Code *</label><input type="text" name="pin" pattern="^[0-9]{6}$" class="form-input" required></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h4 class="form-section-title">Emergency & Status</h4>
+            <div class="form-group-stacked"><label>Contact Person *</label><input type="text" name="contactPerson" class="form-input" required></div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Mobile *</label><input type="tel" name="contactNo" pattern="^[0-9]{10}$" class="form-input" required></div>
+              <div class="form-group-stacked"><label>WhatsApp No *</label><input type="tel" name="whatsappNo" pattern="^[0-9]{10}$" class="form-input" required></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Referring Doctor</label><input type="text" name="refDoctor" class="form-input"></div>
+              <div class="form-group-stacked">
+                <label>Initial Status</label>
+                <select name="status" class="form-select"><option value="Admitted">Admitted</option><option value="Discharged">Discharged</option><option value="Death">Death</option></select>
+              </div>
+            </div>
+            <div class="form-group-stacked">
+              <label for="inpDoctorAdvice">Doctor's Advice</label>
+              <textarea name="doctorAdvice" id="inpDoctorAdvice" class="form-input" rows="2" placeholder="Clinical notes, treatment instructions or doctor's advice..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('newPatientModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Register Admission</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Expense -->
+  <div class="modal-backdrop no-print" id="newExpenseModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Add Expense Entry</h3>
+        <button class="modal-close" onclick="closeModal('newExpenseModal')">×</button>
+      </div>
+      <form id="newExpenseForm">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Expense Details</h4>
+            <div class="form-group-stacked"><label>Patient (Reg No) *</label><select name="regNo" id="expModalRegSelect" class="form-select" required></select></div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Expense Date *</label><input type="date" name="date" id="expModalDate" class="form-input" required></div>
+              <div class="form-group-stacked"><label>Category *</label><select name="category" id="expModalCategory" class="form-select" required><option>Doctor Fees</option><option>Pathology</option><option>Medicine</option><option>Oxygen</option><option>Non-Surgical Item</option><option>Others</option></select></div>
+            </div>
+            <div class="form-group-stacked"><label>Description *</label><input type="text" name="description" id="expModalDescription" class="form-input" placeholder="Doctor name, item description, test name..." required></div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Quantity</label><input type="number" name="qty" id="expModalQty" class="form-input" value="1" min="1" required></div>
+              <div class="form-group-stacked"><label>Rate (₹) *</label><input type="number" name="rate" id="expModalRate" class="form-input" step="0.01" min="0" required></div>
+            </div>
+            <div class="form-group-stacked"><label>Amount (₹)</label><input type="number" name="amount" id="expModalAmount" class="form-input bg-disabled" readonly></div>
+            <div class="form-group-stacked" id="expModalDiscountContainer"><label>Discount (₹)</label><input type="number" name="discount" id="expModalDiscount" class="form-input" value="0" step="0.01" min="0"></div>
+            <div class="form-group-stacked highlight-box">
+              <label>Net Amount (₹): <span id="expModalNetPreview" class="highlight-text-large">₹0.00</span></label>
+            </div>
+          </div>
+
+          <!-- Live Entries Preview on Bottom of Modal (One by One) -->
+          <div class="form-section" id="expModalLivePreviewSection" style="margin-top: 14px; border-top: 2px dashed #fed7aa; padding-top: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 class="form-section-title" style="margin: 0; font-size: 12.5px; border-left-color: #ff6600; color: #9a3412; background: #fff7ed;">📋 Entered Expenses for this Patient</h4>
+              <span id="expModalLiveCount" style="font-size: 12px; font-weight: 700; color: #ea580c;">0 Items</span>
+            </div>
+            <div class="table-responsive" style="max-height: 180px; overflow-y: auto; border: 1px solid #fed7aa; border-radius: 6px; background: #fff;">
+              <table class="data-table" id="expModalLiveTable" style="margin: 0; min-width: 100%; font-size: 12px;">
+                <thead>
+                  <tr style="background: #fce4d6;">
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th style="text-align: center;">Qty</th>
+                    <th style="text-align: right;">Rate (₹)</th>
+                    <th style="text-align: right;">Net (₹)</th>
+                    <th class="no-print" style="text-align: center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="expModalLiveTbody">
+                  <!-- Dynamically populated one-by-one as expenses are entered -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('newExpenseModal')">Close</button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-secondary" id="btnSaveAndAddAnotherExpense" style="background: #fff7ed; border-color: #ffaa66; color: #c2410c; font-weight: 700;">➕ Save & Add Another</button>
+            <button type="submit" class="btn btn-primary" id="btnSaveExpenseAndClose">Save & Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2B: Edit Expense Entry -->
+  <div class="modal-backdrop no-print" id="editExpenseModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Edit Expense Entry</h3>
+        <button class="modal-close" onclick="closeModal('editExpenseModal')">×</button>
+      </div>
+      <form id="editExpenseForm">
+        <input type="hidden" name="expenseId" id="editExpModalId">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Modify Expense Record</h4>
+            <div class="form-group-stacked">
+              <label>Patient (Reg No) *</label>
+              <input type="text" id="editExpModalPatientDisplay" class="form-input bg-disabled" readonly>
+              <input type="hidden" name="regNo" id="editExpModalRegNo">
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label>Expense Date *</label>
+                <input type="date" name="date" id="editExpModalDate" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label>Category *</label>
+                <select name="category" id="editExpModalCategory" class="form-select" required>
+                  <option value="Doctor Fees">Doctor Fees</option>
+                  <option value="Pathology">Pathology</option>
+                  <option value="Medicine">Medicine</option>
+                  <option value="Oxygen">Oxygen</option>
+                  <option value="Non-Surgical Item">Non-Surgical Item</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group-stacked">
+              <label>Description *</label>
+              <input type="text" name="description" id="editExpModalDescription" class="form-input" required>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label>Quantity *</label>
+                <input type="number" name="qty" id="editExpModalQty" class="form-input" value="1" min="1" required>
+              </div>
+              <div class="form-group-stacked">
+                <label>Rate (₹) *</label>
+                <input type="number" name="rate" id="editExpModalRate" class="form-input" step="0.01" min="0" required>
+              </div>
+            </div>
+            <div class="form-group-stacked">
+              <label>Amount (₹)</label>
+              <input type="number" name="amount" id="editExpModalAmount" class="form-input bg-disabled" readonly>
+            </div>
+            <div class="form-group-stacked" id="editExpModalDiscountContainer">
+              <label>Discount (₹)</label>
+              <input type="number" name="discount" id="editExpModalDiscount" class="form-input" value="0" step="0.01" min="0">
+            </div>
+            <div class="form-group-stacked highlight-box">
+              <label>Net Amount (₹): <span id="editExpModalNetPreview" class="highlight-text-large">₹0.00</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('editExpenseModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #ff7700 0%, #ff5500 100%); background-color: #ff6600; border-color: #e05300; color: #ffffff; font-weight: 700;">Update Expense & Recalculate Bill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add Payment -->
+  <div class="modal-backdrop no-print" id="newPaymentModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Record Payment Receipt</h3>
+        <button class="modal-close" onclick="closeModal('newPaymentModal')">×</button>
+      </div>
+      <form id="newPaymentForm">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Payment Details</h4>
+            <div class="form-group-stacked"><label>Patient (Reg No) *</label><select name="regNo" id="payModalRegSelect" class="form-select" required></select></div>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Receipt Date *</label><input type="date" name="date" id="payModalDate" class="form-input" required></div>
+              <div class="form-group-stacked"><label>Payment Mode *</label><select name="mode" class="form-select" required><option>Cash</option><option>UPI</option><option>Card</option><option>Cheque</option></select></div>
+            </div>
+            <div class="form-group-stacked"><label>Amount Received (₹) *</label><input type="number" name="amount" class="form-input" step="0.01" min="1" required></div>
+            <div class="form-group-stacked"><label>Remarks / Ref No</label><input type="text" name="remarks" class="form-input"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('newPaymentModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Receipt</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Discharge Patient -->
+  <div class="modal-backdrop no-print" id="dischargeModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Discharge / Status Update</h3>
+        <button class="modal-close" onclick="closeModal('dischargeModal')">×</button>
+      </div>
+      <form id="dischargeForm">
+        <input type="hidden" name="regNo" id="disModalRegNo">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Discharge Information</h4>
+            <p class="modal-desc">Patient: <strong id="disModalPatientName" class="text-teal">--</strong> (<span id="disModalRegDisplay">--</span>)</p>
+            <div class="form-row-2">
+              <div class="form-group-stacked"><label>Discharge Date *</label><input type="date" name="dischargeDate" id="disModalDate" class="form-input" required></div>
+              <div class="form-group-stacked"><label>Discharge Time *</label><input type="time" name="dischargeTime" id="disModalTime" class="form-input" required></div>
+            </div>
+            <div class="form-group-stacked"><label>Final Status *</label><select name="status" class="form-select" required><option>Discharged</option><option>Death</option></select></div>
+          </div>
+
+          <!-- Financial Settlement Section (Option B) -->
+          <div class="form-section" id="disSettlementSection">
+            <h4 class="form-section-title">Financial Settlement & Dues Clearance</h4>
+            
+            <!-- Zero Dues / Fully Settled Box -->
+            <div id="disZeroDueBox" style="display:none; padding:12px 14px; background:#e8f5e9; border:1px solid #4caf50; border-radius:6px; color:#2e7d32; font-size:13px; font-weight:600; margin-bottom:12px;">
+              ✅ <strong>Account Fully Settled (₹0.00 Outstanding).</strong> Patient is financially cleared for discharge.
+            </div>
+
+            <!-- Dues Pending Box with 1-Click Settlement Option -->
+            <div id="disDueNoticeBox" style="display:none; padding:12px 14px; background:#fffde7; border:1px solid #fbc02d; border-radius:6px; margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <span style="font-size:13px; font-weight:700; color:#b78103;">⚠️ Outstanding Balance Due:</span>
+                <span id="disOutstandingBadge" style="background:#ffff00; color:#cc0000; font-weight:900; font-size:15px; padding:3px 10px; border-radius:4px; border:1px solid #e6b800;">₹0.00</span>
+              </div>
+              
+              <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:#2c3e50; cursor:pointer; margin-bottom:10px;">
+                <input type="checkbox" id="chkDisCollectSettlement" checked style="width:17px; height:17px; accent-color:#ff6600; cursor:pointer;">
+                <span>Record Final Payment & Zero Balance on Discharge</span>
+              </label>
+
+              <div id="disPaymentFields" style="padding-top:10px; border-top:1px dashed #e0c870;">
+                <div class="form-row-2" style="margin-bottom:8px;">
+                  <div class="form-group-stacked">
+                    <label style="font-size:12px; font-weight:700;">Settlement Amount (₹) *</label>
+                    <input type="number" step="0.01" min="0" id="disPaymentAmount" class="form-input" style="font-weight:800; color:#1b5e20;">
+                  </div>
+                  <div class="form-group-stacked">
+                    <label style="font-size:12px; font-weight:700;">Payment Mode *</label>
+                    <select id="disPaymentMode" class="form-select">
+                      <option value="Cash">Cash</option>
+                      <option value="UPI">UPI / QR Code</option>
+                      <option value="Card">Credit / Debit Card</option>
+                      <option value="Cheque">Bank Cheque / Draft</option>
+                      <option value="Trust Waiver">Trust Concession / Waiver</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group-stacked">
+                  <label style="font-size:12px; font-weight:700;">Payment Remarks / Reference</label>
+                  <input type="text" id="disPaymentRemarks" class="form-input" placeholder="e.g. Final discharge settlement / Dues cleared">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('dischargeModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitDischarge" style="background: linear-gradient(135deg, #ff7700 0%, #ff5500 100%); background-color: #ff6600; border-color: #e05300; color: #ffffff; font-weight: 700;">Discharge & Issue Bill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Attach Document -->
+  <div class="modal-backdrop no-print" id="attachDocModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Attach Document / Link</h3>
+        <button type="button" class="modal-close" onclick="closeModal('attachDocModal')">×</button>
+      </div>
+      <form id="attachDocForm">
+        <input type="hidden" id="attachModalRegNo" name="regNo">
+        <input type="hidden" id="attachDocFileData" name="fileData">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Document Details</h4>
+            <p class="modal-desc">Patient: <strong id="attachModalPatientDisplay" class="text-teal">--</strong></p>
+            
+            <div class="form-group-stacked">
+              <label for="attachDocTypeSelect">Document Type *</label>
+              <select id="attachDocTypeSelect" class="form-select" required>
+                <option value="patientAadhaar">Patient Aadhaar Card</option>
+                <option value="partyAadhaar">Relative / Guardian Aadhaar</option>
+                <option value="adviceCert">Doctor Advice / Discharge Cert</option>
+              </select>
+            </div>
+
+            <div class="form-group-stacked">
+              <label for="attachDocFileInput">Upload File (Image / PDF, max 8MB)</label>
+              <input type="file" id="attachDocFileInput" class="form-input" accept="image/*,application/pdf">
+            </div>
+
+            <div id="attachDocPreviewContainer" style="display: none; margin-top: 10px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; background: var(--teal-light); padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border-light);">
+                <span id="attachDocFileName" style="font-size: 13px; font-weight: 600; color: var(--teal-primary);">📄 document</span>
+                <button type="button" id="btnRemoveModalDoc" class="btn btn-secondary btn-sm" style="color: #dc2626;">Remove</button>
+              </div>
+            </div>
+
+            <div id="attachDocImgPreviewWrapper" style="display: none; margin-top: 10px; text-align: center;">
+              <img id="attachDocImgPreview" src="" alt="Document Preview" style="max-height: 180px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border-light);">
+            </div>
+
+            <div class="form-group-stacked" style="margin-top: 16px;">
+              <label for="attachDocLinkInput">Or Online Web Link (URL)</label>
+              <input type="url" id="attachDocLinkInput" class="form-input" placeholder="https://drive.google.com/...">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('attachDocModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Document</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 6: Edit Patient Record -->
+  <div class="modal-backdrop no-print" id="editPatientModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 style="margin: 0;">Edit Patient Record</h3>
+          <small class="text-muted">Modify registration details, contacts, advice and admission status</small>
+        </div>
+        <button type="button" class="modal-close" onclick="closeModal('editPatientModal')">×</button>
+      </div>
+      <form id="editPatientForm">
+        <input type="hidden" name="regNo" id="editModalRegNo">
+        <div class="modal-body form-spacious-stacked">
+
+          <!-- Patient Header Banner -->
+          <div style="background: var(--bg-warm, #fff7ed); border: 1px solid #fed7aa; padding: 12px 16px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: #9a3412;">Registration Number</span>
+              <div style="font-size: 18px; font-weight: 800; color: var(--teal-primary);" id="editModalRegDisplay">AKKMCT/001/2026</div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="badge" id="editModalStatusBadge">Admitted</span>
+            </div>
+          </div>
+
+          <!-- Section 1: Admission Timestamps -->
+          <div class="form-section">
+            <h4 class="form-section-title">Admission Information</h4>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="editInpAdmissionDate">Admission Date *</label>
+                <input type="date" name="admissionDate" id="editInpAdmissionDate" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpAdmissionTime">Admission Time *</label>
+                <input type="time" name="admissionTime" id="editInpAdmissionTime" class="form-input" required>
+              </div>
+            </div>
+            <input type="hidden" name="admissionDay" id="editInpAdmissionDay">
+          </div>
+
+          <!-- Section 2: Personal Details -->
+          <div class="form-section">
+            <h4 class="form-section-title">Personal Details</h4>
+            <div class="form-row-3">
+              <div class="form-group-stacked">
+                <label for="editInpMrMrs">Title *</label>
+                <select name="mrMrs" id="editInpMrMrs" class="form-select" required>
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Ms">Ms</option>
+                  <option value="Master">Master</option>
+                  <option value="Dr">Dr</option>
+                </select>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpName">First Name *</label>
+                <input type="text" name="name" id="editInpName" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpSurname">Surname *</label>
+                <input type="text" name="surname" id="editInpSurname" class="form-input" required>
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group-stacked">
+                <label for="editInpGuardian">Guardian (Father/Husband)</label>
+                <input type="text" name="guardian" id="editInpGuardian" class="form-input">
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpAge">Age *</label>
+                <input type="number" name="age" id="editInpAge" class="form-input" min="1" max="120" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpDiseaseCategory">Disease Category *</label>
+                <select name="diseaseCategory" id="editInpDiseaseCategory" class="form-select" required>
+                  <option value="">-- Choose Category --</option>
+                  <option value="Cancer">Cancer</option>
+                  <option value="Nero">Nero</option>
+                  <option value="Dementia">Dementia</option>
+                  <option value="Cerebral">Cerebral</option>
+                  <option value="Paralysis">Paralysis</option>
+                  <option value="Age-related diseases">Age-related diseases</option>
+                </select>
+                <input type="hidden" name="sex" id="editInpSex" value="Male">
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="editInpMaritalStatus">Marital Status</label>
+                <select name="maritalStatus" id="editInpMaritalStatus" class="form-select">
+                  <option value="Married">Married</option>
+                  <option value="Single">Single</option>
+                  <option value="Widowed">Widowed</option>
+                  <option value="Divorced">Divorced</option>
+                </select>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpOccupation">Occupation</label>
+                <input type="text" name="occupation" id="editInpOccupation" class="form-input">
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="editInpReligion">Religion</label>
+                <input type="text" name="religion" id="editInpReligion" class="form-input" value="Hindu">
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpNationality">Nationality</label>
+                <input type="text" name="nationality" id="editInpNationality" class="form-input" value="Indian">
+              </div>
+            </div>
+
+            <!-- Aadhaar Details -->
+            <div class="form-group-stacked">
+              <label for="editInpAadhaarNo">Patient Aadhaar Number (12 Digits)</label>
+              <input type="text" name="aadhaarNo" id="editInpAadhaarNo" class="form-input" placeholder="XXXX XXXX XXXX" maxlength="14" autocomplete="off">
+            </div>
+
+            <!-- Aadhaar Upload & Existing File Bar -->
+            <div class="form-group-stacked">
+              <label>Patient Aadhaar Card Copy</label>
+              
+              <!-- Existing Attached File Bar -->
+              <div id="editAadhaarExistingBar" class="uploaded-doc-bar" style="display: none; margin-bottom: 8px;">
+                <div class="uploaded-doc-info">
+                  <span class="uploaded-doc-badge">✓ Attached</span>
+                  <span id="editAadhaarFileName" class="uploaded-doc-name">📄 aadhaar_card.pdf</span>
+                </div>
+                <div class="uploaded-doc-actions">
+                  <button type="button" class="btn btn-primary btn-sm" id="btnViewEditAadhaar">👁️ View File</button>
+                  <button type="button" class="btn btn-secondary btn-sm text-red" id="btnRemoveEditAadhaar" title="Remove attached file">🗑️ Remove</button>
+                </div>
+              </div>
+
+              <!-- Drag & Drop Zone for Replacement / New Upload -->
+              <div class="file-dropzone" id="editAadhaarDropzone">
+                <input type="file" id="editInpAadhaarFile" class="file-input-hidden" accept="image/*,application/pdf">
+                <input type="hidden" id="editInpAadhaarDoc" name="patientAadhaarDoc">
+                <div class="dropzone-content" id="editAadhaarDropzoneContent">
+                  <div class="dropzone-icon">🪪</div>
+                  <div class="dropzone-text">
+                    <strong>Click to choose file</strong> or drag & drop new Aadhaar copy
+                  </div>
+                  <div class="dropzone-hint">Supports PDF, PNG, JPG, JPEG (Max 8MB)</div>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnBrowseEditAadhaar" style="margin-top: 8px;">📂 Choose File</button>
+                </div>
+              </div>
+
+              <div id="editAadhaarImgPreviewWrapper" class="uploaded-thumbnail-wrapper" style="display: none; margin-top: 8px;">
+                <img id="editAadhaarImgPreview" src="" alt="Aadhaar Preview" class="uploaded-thumbnail-img">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Address Details -->
+          <div class="form-section">
+            <h4 class="form-section-title">Address Details</h4>
+            <div class="form-group-stacked">
+              <label for="editInpPermanentAddress">Permanent Address *</label>
+              <textarea name="permanentAddress" id="editInpPermanentAddress" class="form-input" rows="2" required></textarea>
+            </div>
+            <div class="form-group-stacked">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label for="editInpPresentAddress" style="margin: 0;">Present Address *</label>
+                <button type="button" class="btn btn-link btn-sm" id="btnCopyPermAddress" style="padding: 0; font-size: 11px; color: var(--teal-primary); cursor: pointer; text-decoration: underline; background: none; border: none;">📋 Copy Permanent</button>
+              </div>
+              <textarea name="presentAddress" id="editInpPresentAddress" class="form-input" rows="2" required></textarea>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="editInpCity">City *</label>
+                <input type="text" name="city" id="editInpCity" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpDistrict">District *</label>
+                <input type="text" name="district" id="editInpDistrict" class="form-input" required>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="editInpState">State *</label>
+                <input type="text" name="state" id="editInpState" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpPin">PIN Code *</label>
+                <input type="text" name="pin" id="editInpPin" pattern="^[0-9]{6}$" class="form-input" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Emergency, Doctor & Clinical Advice -->
+          <div class="form-section">
+            <h4 class="form-section-title">Emergency & Status</h4>
+            <div class="form-group-stacked">
+              <label for="editInpContactPerson">Contact Person *</label>
+              <input type="text" name="contactPerson" id="editInpContactPerson" class="form-input" required>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="editInpContactNo">Mobile *</label>
+                <input type="tel" name="contactNo" id="editInpContactNo" pattern="^[0-9]{10}$" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpWhatsappNo">WhatsApp No *</label>
+                <input type="tel" name="whatsappNo" id="editInpWhatsappNo" pattern="^[0-9]{10}$" class="form-input" required>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="editInpRefDoctor">Referring Doctor</label>
+                <input type="text" name="refDoctor" id="editInpRefDoctor" class="form-input">
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpStatus">Current Status *</label>
+                <select name="status" id="editInpStatus" class="form-select" required>
+                  <option value="Admitted">Admitted</option>
+                  <option value="Discharged">Discharged</option>
+                  <option value="Death">Death</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group-stacked">
+              <label for="editInpDoctorAdvice">Doctor's Advice</label>
+              <textarea name="doctorAdvice" id="editInpDoctorAdvice" class="form-input" rows="2" placeholder="Clinical notes, treatment instructions or doctor's advice..."></textarea>
+            </div>
+
+            <!-- Discharge Details (shown if Discharged or Death) -->
+            <div id="editDischargeRow" class="form-row-2" style="margin-top: 10px;">
+              <div class="form-group-stacked">
+                <label for="editInpDischargeDate">Discharge Date</label>
+                <input type="date" name="dischargeDate" id="editInpDischargeDate" class="form-input">
+              </div>
+              <div class="form-group-stacked">
+                <label for="editInpDischargeTime">Discharge Time</label>
+                <input type="time" name="dischargeTime" id="editInpDischargeTime" class="form-input">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('editPatientModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== PROCUREMENT & FINANCE MODALS ==================== -->
+
+  <!-- Modal: Add Vendor -->
+  <div class="modal-backdrop no-print" id="newVendorModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3>Register New Vendor / Supplier</h3>
+        <button class="modal-close" onclick="closeModal('newVendorModal')">×</button>
+      </div>
+      <form id="newVendorForm">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Supplier Information</h4>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="inpVendorName">Vendor / Company Name *</label>
+                <input type="text" name="name" id="inpVendorName" class="form-input" placeholder="e.g. Metro Pharma Distributors" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="inpVendorCategory">Supplier Category *</label>
+                <select name="category" id="inpVendorCategory" class="form-select" required>
+                  <option value="Medicine / Pharmacy">Medicine / Pharmacy</option>
+                  <option value="Surgical & Disposables">Surgical & Disposables</option>
+                  <option value="Medical Oxygen">Medical Oxygen</option>
+                  <option value="Pathology & Lab">Pathology & Lab</option>
+                  <option value="General & Sundry">General & Sundry</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="inpVendorContactPerson">Contact Person *</label>
+                <input type="text" name="contactPerson" id="inpVendorContactPerson" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="inpVendorPhone">Contact Phone / Mobile *</label>
+                <input type="tel" name="phone" id="inpVendorPhone" pattern="^[0-9]{10}$" class="form-input" required>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="inpVendorGstin">GSTIN Number</label>
+                <input type="text" name="gstin" id="inpVendorGstin" class="form-input" placeholder="15-digit GSTIN (e.g. 19AAECM1234F1Z5)">
+              </div>
+              <div class="form-group-stacked">
+                <label for="inpVendorDrugLic">Drug License / Reg No</label>
+                <input type="text" name="drugLicNo" id="inpVendorDrugLic" class="form-input" placeholder="DL-20B / DL-21B">
+              </div>
+            </div>
+            <div class="form-group-stacked">
+              <label for="inpVendorAddress">Office / Warehouse Address</label>
+              <textarea name="address" id="inpVendorAddress" class="form-input" rows="2" placeholder="Full billing address..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h4 class="form-section-title">Banking & Credit Terms</h4>
+            <div class="form-row-3">
+              <div class="form-group-stacked">
+                <label for="inpVendorBankName">Bank Name</label>
+                <input type="text" name="bankName" id="inpVendorBankName" class="form-input" placeholder="e.g. State Bank of India">
+              </div>
+              <div class="form-group-stacked">
+                <label for="inpVendorAccountNo">Account Number</label>
+                <input type="text" name="accountNo" id="inpVendorAccountNo" class="form-input" placeholder="Bank Account Number">
+              </div>
+              <div class="form-group-stacked">
+                <label for="inpVendorIfsc">IFSC Code</label>
+                <input type="text" name="ifsc" id="inpVendorIfsc" class="form-input" placeholder="SBIN0000123">
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="inpVendorCreditDays">Credit Period (Days)</label>
+                <input type="number" name="creditDays" id="inpVendorCreditDays" class="form-input" value="30" min="0">
+              </div>
+              <div class="form-group-stacked">
+                <label for="inpVendorOpeningBalance">Opening Balance / Carryover Due (₹)</label>
+                <input type="number" name="openingBalance" id="inpVendorOpeningBalance" class="form-input" value="0" step="0.01">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('newVendorModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Vendor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Inward Purchase Bill (GRN) -->
+  <div class="modal-backdrop no-print" id="newPurchaseModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3>Inward Purchase Bill (GRN)</h3>
+        <button class="modal-close" onclick="closeModal('newPurchaseModal')">×</button>
+      </div>
+      <form id="newPurchaseForm">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Invoice & Supplier Headers</h4>
+            <div class="form-row-3">
+              <div class="form-group-stacked">
+                <label for="purModalVendorSelect">Select Vendor *</label>
+                <select name="vendorId" id="purModalVendorSelect" class="form-select" required></select>
+              </div>
+              <div class="form-group-stacked">
+                <label for="purModalInvoiceNo">Supplier Invoice No *</label>
+                <input type="text" name="invoiceNo" id="purModalInvoiceNo" class="form-input" placeholder="INV-2026-..." required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="purModalInvoiceDate">Invoice Date *</label>
+                <input type="date" name="invoiceDate" id="purModalInvoiceDate" class="form-input" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 class="form-section-title" style="margin: 0;">Item Inward & Batch Details</h4>
+              <button type="button" id="btnAddPurchaseItemRow" class="btn btn-secondary btn-sm" style="font-weight: 700; color: #c2410c; border-color: #ffaa66; background: #fff7ed;">➕ Add Another Item</button>
+            </div>
+            
+            <div class="table-responsive" style="border: 1px solid #fed7aa; border-radius: 6px; background: #fff; max-height: 250px; overflow-y: auto;">
+              <table class="data-table" id="purchaseItemsTable" style="margin: 0; font-size: 12px;">
+                <thead>
+                  <tr style="background: #fce4d6;">
+                    <th>Item Description *</th>
+                    <th>Category *</th>
+                    <th>Batch No *</th>
+                    <th>Expiry *</th>
+                    <th style="width: 80px; text-align: center;">Qty *</th>
+                    <th style="width: 100px; text-align: right;">Rate (₹) *</th>
+                    <th style="width: 110px; text-align: right;">Amount (₹)</th>
+                    <th style="width: 40px; text-align: center;">✕</th>
+                  </tr>
+                </thead>
+                <tbody id="purchaseItemsTbody">
+                  <!-- Dynamic Item Rows populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h4 class="form-section-title">Taxation & Bill Total</h4>
+            <div class="form-row-3">
+              <div class="form-group-stacked">
+                <label for="purModalGross">Gross Amount (₹)</label>
+                <input type="number" id="purModalGross" class="form-input bg-disabled" readonly value="0.00">
+              </div>
+              <div class="form-group-stacked">
+                <label for="purModalGstPercent">GST Rate (%)</label>
+                <select id="purModalGstPercent" class="form-select">
+                  <option value="0">0% (Nil / Exempt)</option>
+                  <option value="5">5% (Essential Drugs)</option>
+                  <option value="12" selected>12% (Standard Pharma / Oxygen)</option>
+                  <option value="18">18% (Medical Consumables)</option>
+                </select>
+              </div>
+              <div class="form-group-stacked">
+                <label for="purModalGstAmount">GST Amount (₹)</label>
+                <input type="number" id="purModalGstAmount" class="form-input bg-disabled" readonly value="0.00">
+              </div>
+            </div>
+            <div class="form-group-stacked highlight-box">
+              <label>Net Payable Amount (₹): <span id="purModalNetBillPreview" class="highlight-text-large">₹0.00</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('newPurchaseModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save GRN & Inward Stock</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Issue Stock / Dispense -->
+  <div class="modal-backdrop no-print" id="issueStockModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Issue Stock / Clinical Dispense</h3>
+        <button class="modal-close" onclick="closeModal('issueStockModal')">×</button>
+      </div>
+      <form id="issueStockForm">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Stock Selection</h4>
+            <div class="form-group-stacked">
+              <label for="issueModalBatchSelect">Select Available Item & Batch *</label>
+              <select name="batchId" id="issueModalBatchSelect" class="form-select" required></select>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label>Available in Stock</label>
+                <input type="text" id="issueModalAvailQty" class="form-input bg-disabled" readonly value="0">
+              </div>
+              <div class="form-group-stacked">
+                <label for="issueModalQty">Quantity to Issue *</label>
+                <input type="number" name="qty" id="issueModalQty" class="form-input" min="1" value="1" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h4 class="form-section-title">Destination & Billing</h4>
+            <div class="form-group-stacked">
+              <label for="issueModalType">Issue Purpose *</label>
+              <select name="issueType" id="issueModalType" class="form-select" required>
+                <option value="Patient Clinical Billing">Patient Clinical Billing (Auto-bill to Inpatient Bill)</option>
+                <option value="Internal Ward / Dept">Internal Ward / Clinic Consumption</option>
+                <option value="Wastage / Breakage">Wastage / Damaged / Breakage</option>
+              </select>
+            </div>
+
+            <!-- Dynamic Patient Link if Patient Billing -->
+            <div class="form-group-stacked" id="issuePatientSelectRow">
+              <label for="issueModalPatientSelect">Link to Admitted Patient (Reg No) *</label>
+              <select name="regNo" id="issueModalPatientSelect" class="form-select"></select>
+              <small class="text-muted" style="margin-top: 4px; display: block;">⚡ Item will automatically appear on patient's Clinical Expenses Ledger & Inpatient Bill.</small>
+            </div>
+
+            <!-- Department if Internal -->
+            <div class="form-group-stacked" id="issueDeptSelectRow" style="display: none;">
+              <label for="issueModalDept">Hospital Department / Unit</label>
+              <select name="department" id="issueModalDept" class="form-select">
+                <option value="General Ward">General Ward</option>
+                <option value="Daycare Chemotherapy">Daycare Chemotherapy Unit</option>
+                <option value="Palliative Care Unit">Palliative Care Unit</option>
+                <option value="Operation Theatre (OT)">Operation Theatre (OT)</option>
+                <option value="Emergency Care">Emergency Care</option>
+              </select>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="issueModalDate">Issue Date *</label>
+                <input type="date" name="issueDate" id="issueModalDate" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="issueModalRemarks">Remarks / Notes</label>
+                <input type="text" name="remarks" id="issueModalRemarks" class="form-input" placeholder="Doctor instruction / reason...">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('issueStockModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background: #0284c7; border-color: #0369a1;">Confirm Stock Issue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Vendor Payment Voucher -->
+  <div class="modal-backdrop no-print" id="newVendorPaymentVoucherModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Record Vendor Payment Voucher</h3>
+        <button class="modal-close" onclick="closeModal('newVendorPaymentVoucherModal')">×</button>
+      </div>
+      <form id="newVendorPaymentForm">
+        <div class="modal-body form-spacious-stacked">
+          <div class="form-section">
+            <h4 class="form-section-title">Payment Voucher Details</h4>
+            <div class="form-group-stacked">
+              <label for="vpModalVendorSelect">Payee Vendor *</label>
+              <select name="vendorId" id="vpModalVendorSelect" class="form-select" required></select>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="vpModalDate">Voucher Date *</label>
+                <input type="date" name="date" id="vpModalDate" class="form-input" required>
+              </div>
+              <div class="form-group-stacked">
+                <label for="vpModalAmount">Amount Paid (₹) *</label>
+                <input type="number" name="amount" id="vpModalAmount" class="form-input" min="0.01" step="0.01" required>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group-stacked">
+                <label for="vpModalMode">Payment Mode *</label>
+                <select name="mode" id="vpModalMode" class="form-select" required>
+                  <option value="NEFT / RTGS">NEFT / RTGS (Bank Transfer)</option>
+                  <option value="Cheque">Cheque</option>
+                  <option value="UPI">UPI</option>
+                  <option value="Cash">Cash</option>
+                </select>
+              </div>
+              <div class="form-group-stacked">
+                <label for="vpModalRefNo">UTR / Txn / Cheque No *</label>
+                <input type="text" name="refNo" id="vpModalRefNo" class="form-input" placeholder="Bank Txn ID / Cheque No" required>
+              </div>
+            </div>
+            <div class="form-group-stacked">
+              <label for="vpModalRemarks">Remarks / Invoice Cleared</label>
+              <textarea name="remarks" id="vpModalRemarks" class="form-input" rows="2" placeholder="e.g. Cleared against Invoice INV-2026-881"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('newVendorPaymentVoucherModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background: #16a34a; border-color: #15803d;">Disburse & Post Voucher</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
